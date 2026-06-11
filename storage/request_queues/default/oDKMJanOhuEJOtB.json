@@ -1,0 +1,9 @@
+{
+	"id": "oDKMJanOhuEJOtB",
+	"json": "{\"id\":\"oDKMJanOhuEJOtB\",\"url\":\"https://www.beauteandco.com.au/contact-us/\",\"loadedUrl\":\"https://www.beauteandco.com.au/contact-us/\",\"uniqueKey\":\"https://www.beauteandco.com.au/contact-us\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"crawlDepth\":1,\"state\":4}},\"handledAt\":\"2026-06-11T08:47:47.073Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.beauteandco.com.au/contact-us",
+	"url": "https://www.beauteandco.com.au/contact-us/"
+}

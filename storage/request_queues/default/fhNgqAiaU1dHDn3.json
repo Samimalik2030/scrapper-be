@@ -1,0 +1,9 @@
+{
+	"id": "fhNgqAiaU1dHDn3",
+	"json": "{\"id\":\"fhNgqAiaU1dHDn3\",\"url\":\"https://www.beauteandco.com.au\",\"loadedUrl\":\"https://www.beauteandco.com.au/\",\"uniqueKey\":\"https://www.beauteandco.com.au\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-06-11T08:47:38.428Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.beauteandco.com.au",
+	"url": "https://www.beauteandco.com.au"
+}
