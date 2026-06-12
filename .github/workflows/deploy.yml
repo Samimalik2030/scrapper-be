@@ -3,40 +3,22 @@ name: Deploy to EC2
 on:
   push:
     branches:
-      - main
+      - main   # change if you deploy from another branch
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
-
-      - name: Deploy to EC2
-        run: |
-          ssh -i ~/.ssh/id_ed25519 ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
             cd /home/ubuntu/scrapper-be
-
-            echo "Pulling latest code..."
-            git reset --hard
             git pull origin main
-
-            echo "Installing dependencies..."
-            npm install
-
-            echo "Building..."
+            npm ci
             npm run build
-
-            echo "Restarting PM2..."
-            pm2 restart scrapper-be || pm2 start npm --name scrapper-be -- start
-
+            pm2 restart scrapper-be --update-env
             pm2 save
-          EOF
