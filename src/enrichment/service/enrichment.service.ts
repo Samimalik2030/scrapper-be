@@ -5,19 +5,17 @@ import { extractEmails } from 'src/extractors/email.extractor';
 import { extractPhones } from 'src/extractors/phone.extractor';
 import { extractSocial } from 'src/extractors/social.extractor';
 import { extractFounders } from 'src/extractors/founders.extractor';
-import { extractMissionVision } from 'src/extractors/mission.extractor';
 
 @Injectable()
 export class EnrichmentService {
   async enrich(url: string, config?: Configuration) {
     const pages = await crawlWebsite(url, config);
 
-    const [emails, phones, social, founders, missionVision] = await Promise.all([
+    const [emails, phones, social, founders] = await Promise.all([
       Promise.resolve(extractEmails(pages)),
       Promise.resolve(extractPhones(pages)),
       Promise.resolve(extractSocial(pages)),
       Promise.resolve(extractFounders(pages)),
-      Promise.resolve(extractMissionVision(pages)),
     ]);
 
     return {
@@ -26,9 +24,6 @@ export class EnrichmentService {
       phones,
       social,
       founders,
-      mission: missionVision.mission,
-      vision: missionVision.vision,
-      description: missionVision.description,
       pagesCrawled: pages.length,
     };
   }

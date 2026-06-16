@@ -57,15 +57,6 @@ export class EnrichedResultDto {
   @ApiProperty({ type: [FounderDto] })
   founders: FounderDto[];
 
-  @ApiProperty({ example: 'We provide world-class aesthetic consultations.', nullable: true })
-  mission: string | null;
-
-  @ApiProperty({ example: 'To be the leading aesthetics consultancy in Australia.', nullable: true })
-  vision: string | null;
-
-  @ApiProperty({ example: 'Australia\'s most trusted aesthetics consultancy.', nullable: true })
-  description: string | null;
-
   @ApiProperty({ example: 4 })
   pagesCrawled: number;
 }
