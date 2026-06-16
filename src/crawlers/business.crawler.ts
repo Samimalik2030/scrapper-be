@@ -27,6 +27,23 @@ export async function crawlWebsite(url: string, config?: Configuration): Promise
     maxRequestsPerCrawl: 10,
     maxConcurrency: 1,
     minConcurrency: 1,
+    requestHandlerTimeoutSecs: 60,
+    navigationTimeoutSecs: 30,
+
+    launchContext: {
+      launchOptions: {
+        args: [
+          '--no-sandbox',
+          '--disable-dev-shm-usage',
+          '--disable-gpu',
+          '--disable-extensions',
+          '--disable-background-networking',
+          '--disable-default-apps',
+          '--mute-audio',
+          '--no-first-run',
+        ],
+      },
+    },
 
     async requestHandler({ page, request, enqueueLinks }) {
       const hrefs = await page.$$eval('a[href]', els =>
