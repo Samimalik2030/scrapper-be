@@ -8,6 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -16,24 +17,22 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
 
-      - name: Install and build
+      - name: Build Application
         run: |
           npm ci
           npm run build
-          npm prune --omit=dev
 
-      - name: Copy artifacts to EC2
+      - name: Upload Application Files
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: "dist,node_modules,package.json,package-lock.json"
-          target: /home/ubuntu/scrapper-be
+          source: "dist,package.json,package-lock.json"
+          target: "/home/ubuntu/scrapper-be"
 
-      - name: Restart app
+      - name: Install Dependencies and Restart
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -41,5 +40,11 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd /home/ubuntu/scrapper-be
-            pm2 restart scrapper-be --update-env
+
+            npm ci --omit=dev
+
+            npx playwright install chromium
+
+            pm2 restart scrapper-be --update-env || pm2 start dist/main.js --name scrapper-be
+
             pm2 save
