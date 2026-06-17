@@ -101,6 +101,7 @@ export class EnrichmentGateway implements OnGatewayDisconnect {
           purgeOnStart: false,
         });
 
+        let urlSuccess = false;
         try {
           const data = await this.enrichmentService.enrich(url, crawlConfig);
           const urlElapsed = Date.now() - urlStart;
@@ -112,6 +113,7 @@ export class EnrichmentGateway implements OnGatewayDisconnect {
             client.emit('enrich:result', { batchId, url, data });
           }
           succeeded += 1;
+          urlSuccess = true;
         } catch (err: unknown) {
           const urlElapsed = Date.now() - urlStart;
           const message = err instanceof Error ? err.message : 'Unknown error';
@@ -131,6 +133,7 @@ export class EnrichmentGateway implements OnGatewayDisconnect {
           `[Batch:PROGRESS] batchId=${batchId} completed=${completed}/${total} succeeded=${succeeded} failed=${failed}`,
         );
         if (!state.cancelled) {
+          client.emit('enrich:item-complete', { batchId, url, completed, total, success: urlSuccess });
           client.emit('enrich:progress', { batchId, completed, total });
         }
       }
